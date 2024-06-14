@@ -56,6 +56,6 @@ HIL(Hardware In loop): Use real HW and DYNA4 Studio, vTESTstudio. Environment + 
 DIL(Driver In Loop): Claytex, i.e. Braking test.
 
 # References
-udemy.com: Advanced driver assistance systems.  
+https://www.udemy.com/course/advanced-driver-assistance-systems  
 https://www.classcentral.com/course/youtube-advanced-driver-assistance-system-every-adas-levels-in-car-explained-144728  
 https://www.classcentral.com/course/youtube-adasa-a-conversational-in-vehicle-digital-assistant-for-advanced-driver-assistance-features-166932
