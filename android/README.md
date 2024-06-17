@@ -9,7 +9,7 @@ Paper: Surface
 Board: Graphic buffer, Triple buffering.  
 Display: SurfaceFlinger.  
 
-## Project Butter (Android 4.1)
+## Project Butter (Android 4.1)  
 VSYNC+Triple Buffering  
 
 Triple Buffering:  
@@ -18,10 +18,10 @@ CPU buffer + GPU buffer + Display(3nd Graphic Buffer)
 
 Traceview + systrace + Tracer for OpenGL ES  
 
-## RenderThread (Android 5.0)
+## RenderThread (Android 5.0)  
 RenderNode + RenderThread  
 
-## gfxinfo + hwui + Vulkun (Newer Android)
+## gfxinfo + hwui + Vulkun (Newer Android)  
 gfxinfo is a command used with adb shell (Android Debug Bridge) to gather information about the graphics performance of an application.  
 This command is particularly useful for developers to analyze and optimize the rendering performance of their apps. When you run adb shell dumpsys gfxinfo pkg_name,  
 it provides detailed output about the rendering time for each frame, helping to identify bottlenecks or inefficiencies.  
@@ -86,6 +86,59 @@ Sharepreference:
 View/ViewGroup:
 Touch:
 Services: AMS, PMS, WMS, 
+
+# Crash issue  
+Java crash, Native crash.  
+Usually caused by Process.killProcess(),exit(), crash (i.e. invalid mem access), low memory killer, ANR.  
+Check:  
+Crash info, Logcat (check Error Warning logs), mem info (OOM, virtual mem use up, can check via /proc/meminfo and /proc/pid/smap, for VSS, RSS, PSS, USS).  
+fd num (check /proc/pid/limits), thread count (need < 400, if each use 2MB, then it is 8GB), JNI (DumpReferenceTables).  
+ANR (check iowait, CPU, GC, system server).  
+
+# mem issue
+Check GC info:  
+```bash
+adb shell kill -S QUIT PID  
+adb pull /data/anr/traces.txt  
+```
+low mem killer:  
+Home -> Service -> Perceptible -> Foreground -> Persistent -> System -> Native.  
+Check mem:  
+```bash
+adb shell dumpsys meminfo <package_name|pid> [-d]  
+adb shell setprop wrap.<APP> '"LIBC_DEBUG_MALLOC_OPTIONS=backtrace logwrapper"'  
+adb shell setprop wrap.<APP> '"LIBC_HOOKS_ENABLE=1"'  
+```
+## optimization
+Check device-year-class, and do optimization accordingly.  
+LeakCanary to check Java mem leak.  
+Probe to check OOM.  
+Malloc hook to debug Native mem leak.  
+PLT hook to check library mem alloc func.  
+gcc's -finstrument-functions and ld's –wrap to check mem alloc/ free funcs.  
+Mem monitor: check one user's usage, i.e. every 5 minutes, collect PSS, Java heap info, pic total mem.  
+GC info:
+```bash
+Debug.getRuntimeStat("art.gc.gc-count");  
+Debug.getRuntimeStat("art.gc.gc-time");  
+Debug.getRuntimeStat("art.gc.blocking-gc-count");  
+Debug.getRuntimeStat("art.gc.blocking-gc-time");  
+```
+
+# Latency issue  
+```bash
+top, strace, vmstat, /proc/pid/stat, /proc/pid/schedstat, uptime (restrict to 0.7 * cores)  
+```
+Tools:  
+Traceview, Nanoscope, systrace, Simpleperf, Android studio profiler. With Call chart and Flame chart.  
+Monitor:  
+Msg queue, stub, profilo.  
+## Analysis
+Java thread state: WAITING, TIME_WAITING, BLOCKED.  
+Native thread state: Suspended.  
+Get stack traces: Thread.getAllStackTraces().  
+
+https://android.googlesource.com/platform/bionic/+/master/libc/malloc_debug/README.md
 
 # Reference
 https://time.geekbang.org/column/article/81049  

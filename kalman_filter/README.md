@@ -26,6 +26,8 @@ Cons: Performance depends on the selection of sigma points and the param configu
 
 # Implementation
 Simulation can use C++ Eigen library, use matrix operations to speed up.
+Code can refer to AKFSF-Simulation-CPP directory, forked from github, author is Suchit Kr.
+Can checkout via "git submodule update --init ."
 
 # References
 https://github.com/technitute/AKFSF-Simulation-CPP  
