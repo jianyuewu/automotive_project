@@ -1,3 +1,21 @@
 [submodule "kalman_filter/AKFSF-Simulation-CPP"]
 	path = kalman_filter/AKFSF-Simulation-CPP
 	url = https://github.com/technitute/AKFSF-Simulation-CPP
+[submodule "android/src/Chapter01"]
+	path = android/src/Chapter01
+	url = https://github.com/AndroidAdvanceWithGeektime/Chapter01
+[submodule "android/src/Chapter03"]
+	path = android/src/Chapter03
+	url = https://github.com/AndroidAdvanceWithGeektime/Chapter03
+[submodule "android/src/Chapter02"]
+	path = android/src/Chapter02
+	url = https://github.com/AndroidAdvanceWithGeektime/Chapter02
+[submodule "android/src/Chapter07"]
+	path = android/src/Chapter07
+	url = https://github.com/AndroidAdvanceWithGeektime/Chapter07
+[submodule "android/src/Chapter06-plus"]
+	path = android/src/Chapter06-plus
+	url = https://github.com/AndroidAdvanceWithGeektime/Chapter06-plus
+[submodule "android/src/JVMTI_Sample"]
+	path = android/src/JVMTI_Sample
+	url = https://github.com/AndroidAdvanceWithGeektime/JVMTI_Sample
