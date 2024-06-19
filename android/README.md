@@ -334,6 +334,14 @@ Remove unnecessary resources:
 2. ShrinkResources: Work together with ProGuard's minifyEnabled. Replace unused Drawable and Layout file with empty file.  
 3. RealShrinkResources: Write new resources.arsc.  
 
+# UX Performance  
+Latency is typically calculated in the 50th, 90th, 95th, and 99th percentiles, commonly referred to as p50, p90, p95, and p99.  
+The p50 measurement is 18 ms, meaning 50% of users experienced that latency or less. The p90 measurement is 122, meaning that 9 of the 10 latencies measured less than 122.
+Long-tail latencies: Under real-world conditions, p99 (and higher) latencies are often the ones you need to worry about most.  
+## Possible causes  
+JVM GC, context switches, database repair, cache flushes.  
+IO hoggers, speed mismatch, too many hops between servers, SQL latency (can use NOSQL instead).  
+
 # Reference  
 https://time.geekbang.org/column/article/81049  
 https://time.geekbang.org/column/intro/100021101?tab=catalog  
@@ -364,3 +372,5 @@ https://buck.build/
 https://github.com/facebook/buck  
 https://github.com/Tencent/matrix/blob/master/matrix/matrix-android/matrix-apk-canary/src/main/java/com/tencent/matrix/apk/model/task/UnusedAssetsTask.java  
 https://android.googlesource.com/platform/bionic/+/master/libc/malloc_debug/README.md  
+https://devops.com/how-to-minimize-latency-and-its-impact-on-ux/
+https://www.youtube.com/watch?v=lJ8ydIuPFeU
