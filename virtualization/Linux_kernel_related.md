@@ -220,7 +220,7 @@ put_cpu_var(var);
 10. Useful device nodes  
 Those nodes are useful for debug, like /dev/mem and also kmem, null, port, zero, random, urandom, kmsg.  
 i.e. we can read kernel physical mem via /dev/mem, and create a zeroed file by dd from /dev/zero, also output to /dev/null.  
-## debug  
+## Debug  
 OOM: Usually there are OOM logs, we can check which file/anon and each zone's free mem.  Also can check /proc/meminfo for Buffers, Cached, Shmem (Shmem and tmpfs), slab, vmallocused, usages.  
 Overwrite: Can use mprotect() to protect that page after write, and when others write it, it will trigger crash, so we can know who did that.  
 Kernel mem leak: we can use kmemleak tool or config option.  
