@@ -18,6 +18,13 @@ apt install nvidia-cuda-toolkit
 # colab cuda usage  
 We can also run cuda in colab, which is very convenient when we need just run some small cuda tests.  
 
+# NVDLA
+NVIDIA DLA hardware is a fixed-function accelerator engine targeted for deep learning operations.  
+DLA software consists of the DLA compiler and the DLA runtime stack.  
+TensorRT can run on DLA (including compiler and runtime).  
+![alt text](images/nvdla.png)
+It supports TLM2 SystemC, QEMU and C++ implementations for runtime and Verilog for HW.  
+
 # Reference link  
 https://www.udemy.com/course/cuda-programming-masterclass/  
 https://developer.nvidia.com/cuda-downloads  
