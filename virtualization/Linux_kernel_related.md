@@ -5,13 +5,15 @@ Old kernel has O(1), BFS scheduler, now mainly using CFS (also O(1) time complex
 Kernel is using task_struct for scheduling, for both process and thread, process ID is in tgid, and thread ID is in pid field. real_parent field points to original parent, while parent field can point to debugger process.  
 
 ## Scheduling policy  
+We can set scheduling policy via sched_setscheduler().  
 Mostly used policies are:  
 SCHED_NORMAL: Time equal (vruntime in CFS). Nice value is used for configure the priority and vruntime (10% for each nice level).  
+    Here CFS is using red-black tree to store tasks, left most node is smallest vruntime task, priority is 100-139 (nice -20 to +19).  
+    vruntime = delta_exec ∗ weight_nice_0 / weight.  
 SCHED_FIFO: First In First Out.  
 SCHED_RR: RoundRobin.   
-We can set them via sched_setscheduler().  
-Here CFS is using red-black tree to store tasks, left most node is smallest vruntime task, priority is 100-139 (nice -20 to +19).  
 SCHED_FIFO/RR is using array and linked-list to store, priority is 0-99.
+SCHED_IDLE: It is actually a CFS task, weighted as 3.  
 
 ## Scheduling classes  
 It is defined by sched_class struct.  
@@ -64,6 +66,7 @@ We can also per threads via for_each_online_cpu(cpu).
 ## Cgroup
 Currently need use cgroupv2, instead of cgroupv1, because systemd is stop supporting cgroupv1.
 We can create different cgroups to control resources like cpuset, cpu, memory.  
+In cgroupv1, the default CPU share value is 1024, while in cgroupv2, the default CPU weight (same meaning as share) is 100, with the minimum share/weight being 1. These parameters are controlled via sched_min_granularity_ns and sched_wakeup_granularity_ns.  
 
 ## New scheduler EEVDF  
 Kernel's sched_ext will have new algorithms.  
@@ -71,7 +74,9 @@ EEVDF (Earliest Eligible Virtual Deadline First): A task is considered "eligible
 Mainly for solving QoS related, some tasks need low latency.  
 Solving by deadline-driven, focues on meeting the deadlines of tasks.  
 Add slice for calculating deadline, and pick_eevdf() for select schedule entity.  
-SCHED_EXT: Between SCHED_NORMAL and SCHED_IDLE.  
+
+## sched_ext  
+SCHED_EXT: Another way, which can use BPF to have scheduler plugins, more flexible. Between SCHED_NORMAL and SCHED_IDLE.  
 
 ## Debugging scheduling latency  
 If we are seeing scheduling latency, usually we can check schedstat, top, ftrace, and /proc/interrupts.  
@@ -178,7 +183,7 @@ After create user process/ thread, each thread will have a task_struct, and poin
 When using user space mem, there are several ways, like Pre Alloc (VA + PA + PageTable), Lazy Alloc (VA) and On-Deman Alloc (VA, on-demand alloc PA + PageTable).  
 3. Copy on write  
 After fork, child process will have the resources owned by the parent, i.e. signal, open files, addr space. Resources are controlled via clone() flags, like CLONE_VM/FS/FILES/SIGHAND.  
-Parent process's page table is read only, and child process's page table is also read only. Because they share same vma mapping, if child process write to the page, then page fault will be triggered, and new page allocated, parent's page data will be copied to child.  
+Parent process's page table is marked as read only, and child process's page table is also read only. They have separate page tables, but map to same PA addr space. Because they share same vma mapping, so read can get same data. If child process write to the page, then page fault will be triggered, and new page allocated, parent's page data will be copied to child.  
 For malloc() API, there are 2 sizes, > 128kB, it uses mmap(), < 128kB, it uses brk() API.  
 When page is not mapped, there will be a page fault triggered, and handle_mm_fault() is called, then it will alloc pages from buddy allocator, and create page table accordingly.  
 4. SWAP  
@@ -245,3 +250,6 @@ https://github.com/BiscuitOS/BiscuitOS
 https://www.kernel.org/doc/html/latest/scheduler/index.html  
 https://www.kernel.org/doc/Documentation/sysctl/vm.txt  
 https://www.kernel.org/doc/html/latest/core-api/wrappers/atomic_t.html  
+https://dl.acm.org/doi/pdf/10.1145/3342195.3387517  
+https://storage.googleapis.com/pub-tools-public-publication-data/pdf/43438.pdf  
+https://cloud.tencent.com/developer/article/1821725  
