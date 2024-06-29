@@ -19,12 +19,6 @@
 [submodule "android/src/JVMTI_Sample"]
 	path = android/src/JVMTI_Sample
 	url = https://github.com/AndroidAdvanceWithGeektime/JVMTI_Sample
-[submodule "cuda/src/nvdla/hw"]
-	path = cuda/src/nvdla/hw
-	url = https://github.com/nvdla/hw
-[submodule "cuda/src/nvdla/sw"]
-	path = cuda/src/nvdla/sw
-	url = https://github.com/nvdla/sw
-[submodule "cuda/src/nvdla/vp"]
-	path = cuda/src/nvdla/vp
-	url = https://github.com/nvdla/vp
+[submodule "virtualization/hypervisor/src/gunyah-hypervisor"]
+	path = virtualization/hypervisor/src/gunyah-hypervisor
+	url = https://github.com/quic/gunyah-hypervisor.git
