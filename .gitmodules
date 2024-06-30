@@ -22,3 +22,6 @@
 [submodule "virtualization/hypervisor/src/gunyah-hypervisor"]
 	path = virtualization/hypervisor/src/gunyah-hypervisor
 	url = https://github.com/quic/gunyah-hypervisor.git
+[submodule "adas/object_detection/src/yolov10"]
+	path = adas/object_detection/src/yolov10
+	url = https://github.com/THU-MIG/yolov10
